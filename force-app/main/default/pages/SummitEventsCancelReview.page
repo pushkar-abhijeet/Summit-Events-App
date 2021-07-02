@@ -23,30 +23,45 @@ Created by Thaddaeus Dahlberg on 5/1/2018.
             </div>
             <apex:form id="SummitEventsRegistrationCancelReview" rendered="{!!eventOver && !eventNotFound && eventRegistration.Status__c != 'Cancelled'}" styleClass="slds-grid slds-wrap">
                 <div class="slds-col slds-size_1-of-1 slds-p-vertical_x-small slds-p-vertical_xx-small">
-                    <apex:outputText escape="false" value="{!navBreadCrumb}"/>
+                    <!-- EVENT BREADCRUMB -->
+                    <div class="slds-col slds-p-vertical-small slds-size_1-of-1">
+                        <nav role="navigation" aria-label="Breadcrumbs">
+                            <ol class="slds-breadcrumb slds-list_horizontal">
+                                <apex:outputPanel rendered="{!!ISBLANK(eventPage.Event_Name__c)}" layout="none">
+                                    <li class="slds-breadcrumb__item slds-text-title_caps slds-p-right_x-small">{!eventPage.Event_Name__c}</li>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!!ISBLANK(eventInstance.Instance_Title__c)}" layout="none">
+                                    <li class="slds-breadcrumb__item slds-text-title_caps slds-p-horizontal_x-small">{!eventInstance.Instance_Title__c}</li>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!!ISBLANK(formattedNavDate)}" layout="none">
+                                    <li class="slds-breadcrumb__item slds-text-title_caps slds-p-horizontal_x-small">{!formattedNavDate}</li>
+                                </apex:outputPanel>
+                            </ol>
+                        </nav>
+                    </div>
                 </div>
                 <div class="slds-col slds-size_1-of-1 slds-p-vertical_x-small slds-p-vertical_xx-small">
                     <h2 class="slds-text-heading_large slds-p-vertical_xx-small">
-                        <apex:outputText value="{!eventRegistration.Event__r.Event_Cancel_Review_Title__c}"></apex:outputText>
+                        <apex:outputText value="{!eventRegistration.Event__r.Event_Cancel_Review_Title__c}"/>
                     </h2>
                     <p class="slds-text-body slds-p-vertical_xx-small">
-                        <apex:outputText value="{!eventRegistration.Event__r.Event_Cancel_Review_Description__c}" escape="false"></apex:outputText>
+                        <apex:outputText value="{!eventRegistration.Event__r.Event_Cancel_Review_Description__c}" escape="false"/>
                     </p>
                 </div>
                 <div id="reviewWrapper" class="slds-col slds-size_1-of-1 slds-p-vertical_x-small slds-p-vertical_xx-small">
                     <h3 class="slds-text-heading_medium slds-p-vertical_xx-small">
-                        <apex:outputText value="{!eventRegistration.Event__r.Name}"></apex:outputText>
+                        <apex:outputText value="{!eventRegistration.Event__r.Name}"/>
                     </h3>
                     <p class="slds-text-body slds-p-vertical_xx-small">
-                        <apex:outputText escape="false" value="{!eventRegistration.Event__r.Event_description__c}"></apex:outputText>
+                        <apex:outputText escape="false" value="{!eventRegistration.Event__r.Event_description__c}"/>
                     </p>
                     <ul class="slds-list_dotted">
                         <apex:repeat value="{!appointments}" var="ap">
                             <li>
-                                <apex:outputText value="{!ap.Appointment_Title__c}"></apex:outputText>
-                                <apex:outputText value="{!ap.Appointment_Category__c}" rendered="{!IF(!ISBLANK(ap.Appointment_Category__c), true, false)}"></apex:outputText>
+                                <apex:outputText value="{!ap.Appointment_Title__c}"/>
+                                <apex:outputText value="{!ap.Appointment_Category__c}" rendered="{!IF(!ISBLANK(ap.Appointment_Category__c), true, false)}"/>
                                 <br/><em>
-                                    <apex:outputText value="{!ap.Appointment_Type__c}"></apex:outputText>
+                                    <apex:outputText value="{!ap.Appointment_Type__c}"/>
                                 </em>
                             </li>
                         </apex:repeat>
@@ -58,7 +73,7 @@ Created by Thaddaeus Dahlberg on 5/1/2018.
                     </apex:outputPanel>
                     <apex:outputPanel layout="block" rendered="{!IF (evt.Status__c = 'Cancelled', true, false)}">
                         <p class="slds-text-body slds-p-vertical_xx-small warning">
-                            <apex:outputText escape="false" value="{!evt.Event__r.Event_Cancelled_Notification_Text__c}"/>
+                            <apex:outputText value="{!evt.Event__r.Event_Cancelled_Notification_Text__c}"/>
                         </p>
                     </apex:outputPanel>
 
@@ -76,7 +91,6 @@ Created by Thaddaeus Dahlberg on 5/1/2018.
                 <h2 class="slds-text-heading_large slds-p-vertical_xx-small">Event over</h2>
                 <p class="slds-text-body slds-p-vertical_xx-small">We're sorry, the event {!evt.Event_Name__c} {!IF(!ISBLANK(evt.Event_Instance_Title__c), ' - ' + evt.Event_Instance_Title__c, '')} has already occured and your registration can not be cancelled.</p>
             </apex:outputPanel>
-            <apex:outputText escape="false" value="{!eventRegistration.Event__r.Tracking_Cancel_Registration__c}"></apex:outputText>
         </apex:define>
     </apex:composition>
 </apex:page>

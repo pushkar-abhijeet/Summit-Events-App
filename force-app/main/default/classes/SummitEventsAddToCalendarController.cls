@@ -21,8 +21,18 @@ public with sharing class SummitEventsAddToCalendarController {
     public SummitEventsAddToCalendarController() {
         DTStart = DTEnd = DTStamp = SUMMARY = LOCATION = DESCRIPTION = TIMEZONE2 = DTStartStandard = DTStartDaylight = '';
         UUID = NewGuid().replace('-', '') + 'Summit';
-        String URLInstanceID = ApexPages.currentPage().getParameters().get('instanceID');
-        if (String.isNotBlank(URLInstanceID)) {
+
+        //Strongly type instanceID parameter to Id to prevent URL tampering
+        Id URLInstanceID = null;
+        if (String.isNotBlank(ApexPages.currentPage().getParameters().get('instanceID'))) {
+            try {
+                URLInstanceID = (Id) String.escapeSingleQuotes(ApexPages.currentPage().getParameters().get('instanceID'));
+            } catch (Exception e) {
+                System.debug(e.getMessage());
+            }
+        }
+
+        if (URLInstanceID != null) {
             Summit_Events_Instance__c eventInformation = getEventInformation(URLInstanceID);
 
             if (eventInformation != null) {
@@ -70,7 +80,7 @@ public with sharing class SummitEventsAddToCalendarController {
     public String formattedGmtVersionOfDate(Date aDate, Time aTime) {
         String formattedString = '';
         Datetime newDateTime = Datetime.newInstanceGmt(aDate.year(), aDate.month(), aDate.day(), aTime.hour(), aTime.minute(), aTime.second());
-        //Integer eventStartOffset = tz.getOffset(startDateDate,'');
+        formattedString = newDateTime.formatGmt('yyyyMMdd\'T\'HHmmss');
         return formattedString;
     }
 
@@ -79,7 +89,7 @@ public with sharing class SummitEventsAddToCalendarController {
         if (String.isNotBlank(eventInformation.Instance_Title__c)) {
             eventTitle += ' - ' + eventInformation.Instance_Title__c;
         }
-        return eventTitle;
+        return eventTitle.escapeHtml4();
     }
 
     public String getEventDescription(Summit_Events_Instance__c eventInformation) {
@@ -144,7 +154,7 @@ public with sharing class SummitEventsAddToCalendarController {
         if (String.isBlank(locationTitle)) {
             return '';
         }
-        return locationTitle;
+        return locationTitle.escapeHtml4();
     }
 
     public String getEventLocationLink(Summit_Events_Instance__c eventInformation) {
@@ -187,10 +197,20 @@ public with sharing class SummitEventsAddToCalendarController {
     }
 
     public PageReference calendarType() {
-        String URLInstanceID = ApexPages.currentPage().getParameters().get('instanceID');
+
+        //Strongly type instanceID parameter to Id to prevent URL tampering
+        Id URLInstanceID = null;
+        if (String.isNotBlank(ApexPages.currentPage().getParameters().get('instanceID'))) {
+            try {
+                URLInstanceID = (Id) String.escapeSingleQuotes(ApexPages.currentPage().getParameters().get('instanceID'));
+            } catch (Exception e) {
+                System.debug(e.getMessage());
+            }
+        }
+
         PageReference linkPage = null;
         String urlCalendarLink = '';
-        if (String.isNotBlank(URLInstanceID)) {
+        if (URLInstanceID != null) {
             Summit_Events_Instance__c eventInformation = getEventInformation(URLInstanceID);
             String type = '';
             if (String.isNotBlank(ApexPages.currentPage().getParameters().get('type'))) {

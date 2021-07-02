@@ -4,12 +4,13 @@
             "path": "force-app",
             "default": true,
             "package": "Summit Events App",
-            "versionName": "May 2021",
-            "versionNumber": "0.16.0.NEXT",
+            "versionName": "June 2021",
+            "versionNumber": "0.20.0.NEXT",
             "definitionFile": "orgs/dev.json",
-            "ancestorId": "04t4P000002fPbQQAU"
+            "ancestorId": "04t4P000002fPl8QAE"
         }
     ],
+    "namespace": "summit",
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "51.0",
     "packageAliases": {
@@ -29,6 +30,9 @@
         "Summit Events App@0.13.0-1": "04t4P000002T62MQAS",
         "Summit Events App@0.14.0-1": "04t4P000002fPVIQA2",
         "Summit Events App@0.15.0-1": "04t4P000002fPbQQAU",
-        "Summit Events App@0.16.0-1": "04t4P000002fPbuQAE"
+        "Summit Events App@0.16.0-1": "04t4P000002fPbuQAE",
+        "Summit Events App@0.17.0-2": "04t4P000002fPktQAE",
+        "Summit Events App@0.19.0-1": "04t4P000002fPl8QAE",
+        "Summit Events App@0.20.0-1": "04t4P000002fPn4QAE"
     }
 }

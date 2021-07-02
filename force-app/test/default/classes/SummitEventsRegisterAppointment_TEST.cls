@@ -39,19 +39,17 @@ private class SummitEventsRegisterAppointment_TEST {
             List<Summit_Events_Appointments__c> testAppointments = [SELECT Id, Event_Registration__c FROM Summit_Events_Appointments__c WHERE Event_Registration__c = :seaTestRegistration.Id];
             System.assertEquals(testAppointments.size(), 0);
 
-            System.debug(optionsCtrl.checkEventDetails());
-
             optionsCtrl.incomingAppointmentJSON = '[]';
             optionsCtrl.saveOptions();
 
             String jsonAppointments = '[';
             for (Summit_Events_Appointment_Type__c at : testAppointmentTypes) {
                 jsonAppointments += '{';
-                jsonAppointments += '"apptId":"' + at.Id + '",';
-                jsonAppointments += '"apptCategory":"' + at.Appointment_Category__c + '",';
-                jsonAppointments += '"apptType":"' + at.Appointment_Type__c + '",';
-                jsonAppointments += '"apptText":"",';
-                jsonAppointments += '"apptTitle":"' + at.Title__c + '"';
+                jsonAppointments += '"appId":"' + at.Id + '",';
+                jsonAppointments += '"appCategory":"' + at.Appointment_Category__c + '",';
+                jsonAppointments += '"appType":"' + at.Appointment_Type__c + '",';
+                jsonAppointments += '"appText":"",';
+                jsonAppointments += '"appTitle":"' + at.Title__c + '"';
                 jsonAppointments += '},';
             }
             jsonAppointments = jsonAppointments.removeEnd(',');

@@ -9,7 +9,7 @@ public with sharing class SummitEventsConfirmationController {
     public Summit_Events__c eventPage { get; set; }
     public Summit_Events_Instance__c eventInstance { get; set; }
     public String templateSelected { get; set; }
-    public String navBreadCrumb { get; set; }
+    public String formattedNavDate { get; set; }
     public Boolean eventIsClosed { get; set; }
     public Boolean adminOpen { get; set; }
 
@@ -45,7 +45,7 @@ public with sharing class SummitEventsConfirmationController {
                 eventIsClosed = seaShared.isEventClosed(eventPage, eventInstance);
             }
 
-            navBreadCrumb = seaShared.navBreadcrumbBuilder(eventInstance, false);
+            formattedNavDate = seaShared.navBreadcrumbBuilder(eventInstance);
         }
 
     }
@@ -70,15 +70,12 @@ public with sharing class SummitEventsConfirmationController {
                 }
                 evtReg.Status__c = 'Registered';
 
-                String encryptedString = SEAShared.createEncryptedCookie(eventInformation.audience, eventInformation.instanceId, eventInformation.eventId, eventInformation.registrationId);
+                String encryptedString = seaShared.createEncryptedCookie(eventInformation.audience, eventInformation.instanceId, eventInformation.eventId, eventInformation.registrationId);
 
-                System.debug(encryptedString);
                 if (encryptedString.length() > 255) {
-                    System.debug('bigger than 255');
                     evtReg.Encrypted_Registration_Id_1__c = encryptedString.substring(0, 255);
                     evtReg.Encrypted_Registration_Id_2__c = encryptedString.substring(255, encryptedString.length());
                 } else {
-                    System.debug('less than 255');
                     evtReg.Encrypted_Registration_Id_1__c = encryptedString;
                 }
 
@@ -88,7 +85,7 @@ public with sharing class SummitEventsConfirmationController {
                 SummitEventsShared SEAShared = new SummitEventsShared();
 
                 //Remove the registration ID from the cookie so back button will redirect to the correct page.
-                seaShared.createEncryptedCookie(eventInformation.audience, eventInformation.instanceId, eventInformation.eventId, '');
+                SEAShared.createEncryptedCookie(eventInformation.audience, eventInformation.instanceId, eventInformation.eventId, '');
             }
         }
     }
@@ -105,7 +102,7 @@ public with sharing class SummitEventsConfirmationController {
 
         public Summit_Events_Registration__c updateRegistration(Summit_Events_Registration__c newEvtReg) {
             try {
-                upsert newEvtReg;
+                update newEvtReg;
             } catch (Exception ex) {
                 System.debug(ex.getMessage());
                 ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage()));
