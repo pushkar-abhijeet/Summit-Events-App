@@ -7,6 +7,13 @@ project:
         api_version: '51.0'
     source_format: sfdx
 
+orgs:
+    scratch:
+        dev_namespaced:
+            config_file: orgs/dev.json
+            days: 7
+            namespaced: True
+
 tasks:
 
     deploy_site_config:
@@ -87,6 +94,13 @@ tasks:
             mapping: datasets/dev/mapping.yml
             sql_path: datasets/dev/data.sql
 
+    deploy_dev_namespaced_event_records:
+        description: Configure sample records for the Event app
+        class_path: cumulusci.tasks.bulkdata.load.LoadData
+        options:
+            mapping: datasets/dev/mapping.yml
+            sql_path: datasets/dev/data.sql
+
     robot:
         options:
             suites: robot/SummitEventsApp/tests
@@ -101,8 +115,6 @@ tasks:
 flows:
     config_qa:
         steps:
-            3:
-                task: deploy_dev_event_records
             4:
                 task: deploy_permission_set
             5:
@@ -113,11 +125,11 @@ flows:
                 task: deploy_guest_permission_set
             8:
                 task: deploy_guest_sharing_rules
+            9:
+                task: deploy_dev_event_records
 
     config_dev:
         steps:
-            3:
-                task: deploy_dev_event_records
             4:
                 task: deploy_permission_set
             5:
@@ -128,3 +140,5 @@ flows:
                 task: deploy_guest_permission_set
             8:
                 task: deploy_guest_sharing_rules
+            9:
+                task: deploy_dev_event_records
