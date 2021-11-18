@@ -4,6 +4,7 @@
     <defaultValue>false</defaultValue>
     <description>Indicate if an event is private and shouldn&apos;t appear on a list/calendar of events.</description>
     <externalId>false</externalId>
+    <inlineHelpText>Indicate if an event is private and shouldn&apos;t appear on a list/calendar of events. If selected, all related instances will be removed from the list/calendar.</inlineHelpText>
     <label>Private Event</label>
     <trackHistory>false</trackHistory>
     <trackTrending>false</trackTrending>
